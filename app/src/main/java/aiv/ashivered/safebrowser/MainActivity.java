@@ -66,6 +66,12 @@ public class MainActivity extends Activity {
     private String domain;
     private static final String PREFS_NAME = "MyPrefsFile";
     private static final String KEY_ACCEPTED = "acceptedTerms";
+    private static final String[] ALLOWED_DOMAINS = {
+            "etzhaim.org.il",
+            "www.etzhaim.org.il",
+            "wordwall.net",
+            "www.wordwall.net"
+    };
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
@@ -125,12 +131,11 @@ public class MainActivity extends Activity {
         }
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
-        
+
         // Initialize whitelist with allowed domains
-        whiteHosts.add("etzhaim.org.il");
-        whiteHosts.add("www.etzhaim.org.il");
-        whiteHosts.add("wordwall.net");
-        whiteHosts.add("www.wordwall.net");
+        for (String domain : ALLOWED_DOMAINS) {
+            whiteHosts.add(domain);
+        }
 
         // WebView Setup (Original)
         mWebView = findViewById(R.id.activity_main_webview);
