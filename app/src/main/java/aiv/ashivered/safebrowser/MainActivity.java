@@ -12,7 +12,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.Html;
@@ -52,8 +51,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -69,6 +66,12 @@ public class MainActivity extends Activity {
     private String domain;
     private static final String PREFS_NAME = "MyPrefsFile";
     private static final String KEY_ACCEPTED = "acceptedTerms";
+    private static final String[] ALLOWED_DOMAINS = {
+            "etzhaim.org.il",
+            "www.etzhaim.org.il",
+            "wordwall.net",
+            "www.wordwall.net"
+    };
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
@@ -128,10 +131,11 @@ public class MainActivity extends Activity {
         }
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
-        Boolean noNews = sp.getBoolean("news", false);
-        String urlToLoad = noNews ? "https://ashivered.github.io/SafeBrowserResources/list_nonews.txt" : "https://ashivered.github.io/SafeBrowserResources/list_news.txt";
 
-        new LoadHostsTask().execute(urlToLoad);
+        // Initialize whitelist with allowed domains
+        for (String domain : ALLOWED_DOMAINS) {
+            whiteHosts.add(domain);
+        }
 
         // WebView Setup (Original)
         mWebView = findViewById(R.id.activity_main_webview);
@@ -163,11 +167,7 @@ public class MainActivity extends Activity {
             Toast.makeText(this, R.string.downloading, Toast.LENGTH_LONG).show();
         });
 
-        if (noNews) {
-            mWebView.loadUrl("https://ashivered.github.io/SafeBrowserResources/index_nonews.html"); //Replace The Link Here
-        } else {
-            mWebView.loadUrl("https://ashivered.github.io/SafeBrowserResources/index.html"); //Replace The Link Here
-        }
+        mWebView.loadUrl("https://www.etzhaim.org.il");
 
 
     }
@@ -356,35 +356,6 @@ public class MainActivity extends Activity {
                         "observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['src', 'srcset', 'style'] }); " +
                         "})();");
             }
-        }
-    }
-
-    private class LoadHostsTask extends AsyncTask<String, Void, List<String>> {
-        @Override
-        protected List<String> doInBackground(String... urls) {
-            List<String> hosts = new ArrayList<>();
-            try {
-                URL url = new URL(urls[0]);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    hosts.add(line);
-                }
-                reader.close();
-                connection.disconnect();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return hosts;
-        }
-
-        @Override
-        protected void onPostExecute(List<String> result) {
-            whiteHosts.addAll(result);
-            System.out.println(whiteHosts);
         }
     }
 
