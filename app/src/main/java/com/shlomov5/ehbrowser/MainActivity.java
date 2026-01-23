@@ -1,4 +1,4 @@
-package aiv.ashivered.safebrowser;
+package com.shlomov5.ehbrowser;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -123,12 +123,7 @@ public class MainActivity extends Activity {
 
         requestStoragePermission();
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        boolean accepted = settings.getBoolean(KEY_ACCEPTED, false);
-
-        if (!accepted) {
-            showTermsDialog();
-        }
+        // Terms dialog removed - user requirement
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
 

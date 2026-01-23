@@ -1,4 +1,4 @@
-package aiv.ashivered.safebrowser;
+package com.shlomov5.ehbrowser;
 
 import org.junit.Test;
 

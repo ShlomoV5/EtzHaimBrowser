@@ -1,4 +1,4 @@
-package aiv.ashivered.safebrowser;
+package com.shlomov5.ehbrowser;
 
 import android.content.Context;
 import android.content.DialogInterface;

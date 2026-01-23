@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'aiv.ashivered.safebrowser'
+    namespace 'com.shlomov5.ehbrowser'
     compileSdk 35
 
     defaultConfig {
-        applicationId "aiv.ashivered.safebrowser"
+        applicationId "com.shlomov5.ehbrowser"
         minSdk 21
         targetSdk 35
         versionCode 9
