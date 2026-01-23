@@ -3,7 +3,7 @@ package com.shlomov5.ehbrowser;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
+import android.os.AsyncTask; // Note: Deprecated in API 30, but still functional. Consider migrating to ExecutorService or Coroutines for future versions.
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -178,15 +178,24 @@ public class URLManagementActivity extends Activity {
     }
 
     private class ImportUrlTask extends AsyncTask<String, Void, List<String>> {
+        private String errorMessage = null;
+
         @Override
         protected List<String> doInBackground(String... urls) {
             List<String> importedUrls = new ArrayList<>();
+            HttpURLConnection connection = null;
             try {
                 URL url = new URL(urls[0]);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setConnectTimeout(5000);
                 connection.setReadTimeout(5000);
+
+                int responseCode = connection.getResponseCode();
+                if (responseCode != HttpURLConnection.HTTP_OK) {
+                    errorMessage = "HTTP error: " + responseCode;
+                    return importedUrls;
+                }
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String line;
@@ -200,16 +209,30 @@ public class URLManagementActivity extends Activity {
                     }
                 }
                 reader.close();
-                connection.disconnect();
-            } catch (Exception e) {
+            } catch (java.net.MalformedURLException e) {
+                errorMessage = "Invalid URL format";
                 e.printStackTrace();
+            } catch (java.io.IOException e) {
+                errorMessage = "Network error: " + e.getMessage();
+                e.printStackTrace();
+            } catch (Exception e) {
+                errorMessage = "Error: " + e.getMessage();
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
             }
             return importedUrls;
         }
 
         @Override
         protected void onPostExecute(List<String> importedUrls) {
-            if (importedUrls != null && !importedUrls.isEmpty()) {
+            if (errorMessage != null) {
+                Toast.makeText(URLManagementActivity.this,
+                        getString(R.string.import_error) + ": " + errorMessage,
+                        Toast.LENGTH_LONG).show();
+            } else if (importedUrls != null && !importedUrls.isEmpty()) {
                 int added = 0;
                 for (String url : importedUrls) {
                     if (!urlList.contains(url)) {
