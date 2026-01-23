@@ -78,5 +78,18 @@ ashivered.apps@gmail.com\n
     <string name="enter">הזן</string>
     <string name="disable">בטל נעילה</string>
     <string name="settings_locked">ההגדרות נעולות. הזן סיסמה.</string>
+    <string name="url_management">ניהול כתובות מאושרות</string>
+    <string name="url_management_title">כתובות מאושרות</string>
+    <string name="add_url">הוסף כתובת</string>
+    <string name="remove_url">הסר</string>
+    <string name="enter_url">הזן כתובת או דומיין</string>
+    <string name="import_url_list">ייבא רשימת כתובות</string>
+    <string name="enter_import_url">הזן כתובת של קובץ טקסט עם כתובות</string>
+    <string name="import_success">הכתובות יובאו בהצלחה</string>
+    <string name="import_error">הייבוא נכשל</string>
+    <string name="url_added">הכתובת נוספה</string>
+    <string name="url_removed">הכתובת הוסרה</string>
+    <string name="url_exists">הכתובת כבר קיימת</string>
+    <string name="invalid_url">פורמט כתובת לא חוקי</string>
 
 </resources>

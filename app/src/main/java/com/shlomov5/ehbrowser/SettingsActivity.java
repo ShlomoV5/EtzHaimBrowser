@@ -2,6 +2,7 @@ package com.shlomov5.ehbrowser;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -54,6 +55,7 @@ public class SettingsActivity extends AppCompatActivity {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
             lockSettingsPref = findPreference("lock_settings");
+            Preference manageUrlsPref = findPreference("manage_urls");
 
             if (lockSettingsPref != null) {
                 lockSettingsPref.setChecked(PasswordUtils.isSettingsLockEnabled(requireContext()));
@@ -78,6 +80,14 @@ public class SettingsActivity extends AppCompatActivity {
                             return true;
                         }
                     }
+                });
+            }
+
+            if (manageUrlsPref != null) {
+                manageUrlsPref.setOnPreferenceClickListener(preference -> {
+                    Intent intent = new Intent(requireContext(), URLManagementActivity.class);
+                    startActivity(intent);
+                    return true;
                 });
             }
         }

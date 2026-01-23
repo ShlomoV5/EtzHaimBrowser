@@ -52,8 +52,10 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 
@@ -66,12 +68,7 @@ public class MainActivity extends Activity {
     private String domain;
     private static final String PREFS_NAME = "MyPrefsFile";
     private static final String KEY_ACCEPTED = "acceptedTerms";
-    private static final String[] ALLOWED_DOMAINS = {
-            "etzhaim.org.il",
-            "www.etzhaim.org.il",
-            "wordwall.net",
-            "www.wordwall.net"
-    };
+    private static final String PREF_APPROVED_URLS = "approved_urls";
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
@@ -127,10 +124,8 @@ public class MainActivity extends Activity {
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
 
-        // Initialize whitelist with allowed domains
-        for (String domain : ALLOWED_DOMAINS) {
-            whiteHosts.add(domain);
-        }
+        // Load approved URLs from preferences
+        loadApprovedUrls();
 
         // WebView Setup (Original)
         mWebView = findViewById(R.id.activity_main_webview);
@@ -286,6 +281,28 @@ public class MainActivity extends Activity {
     private void openSettingsActivity() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
+    }
+
+    private void loadApprovedUrls() {
+        Set<String> urls = sp.getStringSet(PREF_APPROVED_URLS, getDefaultUrls());
+        whiteHosts.clear();
+        whiteHosts.addAll(urls);
+    }
+
+    private Set<String> getDefaultUrls() {
+        Set<String> defaultUrls = new HashSet<>();
+        defaultUrls.add("etzhaim.org.il");
+        defaultUrls.add("www.etzhaim.org.il");
+        defaultUrls.add("wordwall.net");
+        defaultUrls.add("www.wordwall.net");
+        return defaultUrls;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Reload approved URLs when returning to MainActivity
+        loadApprovedUrls();
     }
 
     private class HelloWebViewClient extends WebViewClient {

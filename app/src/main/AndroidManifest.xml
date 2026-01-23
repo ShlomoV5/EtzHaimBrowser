@@ -44,6 +44,10 @@
             android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity
+            android:name=".URLManagementActivity"
+            android:exported="false"
+            android:label="@string/url_management_title" />
+        <activity
             android:name=".AboutActivity"
             android:exported="true" />
 
