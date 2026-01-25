@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">Safe Browser</string>
+    <string name="app_name">Etz Haim Browser</string>
     <string name="blocked_page">This site is not allowed!</string>
     <string name="downloading">Downloading file...</string>
     <string name="title_activity_settings">Settings</string>
@@ -78,5 +78,18 @@ Please feel free to reach out to me via email :)
     <string name="enter">Enter</string>
     <string name="disable">Disable</string>
     <string name="settings_locked">Settings are locked. Enter password.</string>
+    <string name="url_management">URL Management</string>
+    <string name="url_management_title">Approved URLs</string>
+    <string name="add_url">Add URL</string>
+    <string name="remove_url">Remove</string>
+    <string name="enter_url">Enter URL or domain</string>
+    <string name="import_url_list">Import URL List</string>
+    <string name="enter_import_url">Enter URL of text file with URLs</string>
+    <string name="import_success">URLs imported successfully</string>
+    <string name="import_error">Failed to import URLs</string>
+    <string name="url_added">URL added</string>
+    <string name="url_removed">URL removed</string>
+    <string name="url_exists">URL already exists</string>
+    <string name="invalid_url">Invalid URL format</string>
 
 </resources>

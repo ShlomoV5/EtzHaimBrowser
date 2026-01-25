@@ -24,6 +24,13 @@
             app:title="@string/url_title" />
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="@string/url_management">
+        <Preference
+            app:key="manage_urls"
+            app:title="@string/url_management_title"
+            app:summary="Add, remove, or import approved URLs" />
+    </PreferenceCategory>
+
     <!-- Add this new category and preference -->
     <PreferenceCategory app:title="@string/security_settings">
         <SwitchPreferenceCompat
