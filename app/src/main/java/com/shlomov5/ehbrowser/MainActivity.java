@@ -119,6 +119,9 @@ public class MainActivity extends Activity {
         });
 
         requestStoragePermission();
+        
+        // Check for updates on startup
+        checkForAppUpdates();
 
         // Terms dialog removed - user requirement
 
@@ -291,10 +294,34 @@ public class MainActivity extends Activity {
 
     private Set<String> getDefaultUrls() {
         Set<String> defaultUrls = new HashSet<>();
-        defaultUrls.add("etzhaim.org.il");
-        defaultUrls.add("www.etzhaim.org.il");
-        defaultUrls.add("wordwall.net");
-        defaultUrls.add("www.wordwall.net");
+        // Try to read from whitelist.txt in assets or raw resources
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(
+                new InputStreamReader(getAssets().open("whitelist.txt")));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (!line.isEmpty() && !line.startsWith("#")) {
+                    defaultUrls.add(line);
+                }
+            }
+        } catch (IOException e) {
+            Log.e("MainActivity", "Error reading whitelist.txt, using hardcoded defaults", e);
+            // Fallback to hardcoded defaults if file not found
+            defaultUrls.add("etzhaim.org.il");
+            defaultUrls.add("www.etzhaim.org.il");
+            defaultUrls.add("wordwall.net");
+            defaultUrls.add("www.wordwall.net");
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    Log.e("MainActivity", "Error closing reader", e);
+                }
+            }
+        }
         return defaultUrls;
     }
 
@@ -390,5 +417,11 @@ public class MainActivity extends Activity {
         } else {
             super.onBackPressed();
         }
+    }
+    
+    private void checkForAppUpdates() {
+        // Only check for updates if device is online
+        UpdateChecker updateChecker = new UpdateChecker(this);
+        updateChecker.checkForUpdates();
     }
 }
