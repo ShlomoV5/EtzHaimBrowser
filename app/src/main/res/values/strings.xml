@@ -92,4 +92,13 @@ Please feel free to reach out to me via email :)
     <string name="url_exists">URL already exists</string>
     <string name="invalid_url">Invalid URL format</string>
 
+    <!-- Auto-update strings -->
+    <string name="update_available">עדכון זמין</string>
+    <string name="update_message">גרסה חדשה %s זמינה. האם ברצונך להוריד אותה עכשיו?</string>
+    <string name="download">הורדה</string>
+    <string name="later">אחר כך</string>
+    <string name="downloading_update">מוריד עדכון...</string>
+    <string name="update_downloaded">עדכון הורד. לוחץ להתקנה.</string>
+    <string name="update_check_failed">בדיקת עדכון נכשלה</string>
+
 </resources>
