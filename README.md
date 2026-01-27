@@ -1,5 +1,7 @@
 ![image](https://raw.githubusercontent.com/AshiVered/support-israel-banner/main/assets/support-israel-banner.jpg)
-
+# Fork description
+This fork is based on Ashi Vered's android safe browser.
+It was changed to be our school's tablets' browser- allowing certain learning activity websites and blocking general internet.
 
 # Android-Safe-browser
 A simple Webview based browser with a whitelist of allowed URLs.
