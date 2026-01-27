@@ -103,5 +103,6 @@ Please feel free to reach out to me via email :)
     <string name="error_downloading_update">שגיאה בהורדת עדכון</string>
     <string name="update_file_not_found">קובץ עדכון לא נמצא</string>
     <string name="error_installing_update">שגיאה בהתקנת עדכון</string>
+    <string name="update_download_title">עדכון Etz Haim Browser</string>
 
 </resources>

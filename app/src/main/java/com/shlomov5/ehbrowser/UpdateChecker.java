@@ -42,6 +42,7 @@ public class UpdateChecker {
                 URL url = new URL(GITHUB_API_URL);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
+                connection.setRequestProperty("User-Agent", "EtzHaimBrowser");
                 connection.setConnectTimeout(10000);
                 connection.setReadTimeout(10000);
                 
@@ -106,8 +107,15 @@ public class UpdateChecker {
             
             int maxLength = Math.max(latestParts.length, currentParts.length);
             for (int i = 0; i < maxLength; i++) {
-                int latest = i < latestParts.length ? Integer.parseInt(latestParts[i]) : 0;
-                int current = i < currentParts.length ? Integer.parseInt(currentParts[i]) : 0;
+                int latest = 0;
+                int current = 0;
+                try {
+                    latest = i < latestParts.length ? Integer.parseInt(latestParts[i].replaceAll("[^0-9]", "")) : 0;
+                    current = i < currentParts.length ? Integer.parseInt(currentParts[i].replaceAll("[^0-9]", "")) : 0;
+                } catch (NumberFormatException e) {
+                    // If parsing fails, treat as 0
+                    Log.w(TAG, "Failed to parse version number", e);
+                }
                 
                 if (latest > current) {
                     return true;
@@ -136,7 +144,7 @@ public class UpdateChecker {
     private void downloadUpdate(String downloadUrl) {
         try {
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(downloadUrl));
-            request.setTitle("EtzHaimBrowser Update");
+            request.setTitle(activity.getString(R.string.update_download_title));
             request.setDescription(activity.getString(R.string.downloading_update));
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, UPDATE_APK_FILENAME);
@@ -145,6 +153,7 @@ public class UpdateChecker {
             downloadId = downloadManager.enqueue(request);
             
             // Register receiver to install APK after download
+            // Note: Receiver unregisters itself after handling the download completion
             BroadcastReceiver onComplete = new BroadcastReceiver() {
                 public void onReceive(Context context, Intent intent) {
                     long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
