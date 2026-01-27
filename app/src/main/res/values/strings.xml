@@ -100,5 +100,8 @@ Please feel free to reach out to me via email :)
     <string name="downloading_update">מוריד עדכון...</string>
     <string name="update_downloaded">עדכון הורד. לוחץ להתקנה.</string>
     <string name="update_check_failed">בדיקת עדכון נכשלה</string>
+    <string name="error_downloading_update">שגיאה בהורדת עדכון</string>
+    <string name="update_file_not_found">קובץ עדכון לא נמצא</string>
+    <string name="error_installing_update">שגיאה בהתקנת עדכון</string>
 
 </resources>

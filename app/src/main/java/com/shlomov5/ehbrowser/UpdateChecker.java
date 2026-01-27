@@ -28,6 +28,7 @@ import java.net.URL;
 public class UpdateChecker {
     private static final String TAG = "UpdateChecker";
     private static final String GITHUB_API_URL = "https://api.github.com/repos/ShlomoV5/EtzHaimBrowser/releases/latest";
+    private static final String UPDATE_APK_FILENAME = "EtzHaimBrowser-update.apk";
     private Activity activity;
     private long downloadId = -1;
     
@@ -138,7 +139,7 @@ public class UpdateChecker {
             request.setTitle("EtzHaimBrowser Update");
             request.setDescription(activity.getString(R.string.downloading_update));
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "EtzHaimBrowser-update.apk");
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, UPDATE_APK_FILENAME);
             
             DownloadManager downloadManager = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
             downloadId = downloadManager.enqueue(request);
@@ -159,17 +160,17 @@ public class UpdateChecker {
             Toast.makeText(activity, R.string.downloading_update, Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Log.e(TAG, "Error downloading update", e);
-            Toast.makeText(activity, "Error downloading update", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, R.string.error_downloading_update, Toast.LENGTH_SHORT).show();
         }
     }
     
     private void installUpdate() {
         try {
             File file = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOWNLOADS), "EtzHaimBrowser-update.apk");
+                Environment.DIRECTORY_DOWNLOADS), UPDATE_APK_FILENAME);
             
             if (!file.exists()) {
-                Toast.makeText(activity, "Update file not found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, R.string.update_file_not_found, Toast.LENGTH_SHORT).show();
                 return;
             }
             
@@ -190,7 +191,7 @@ public class UpdateChecker {
             Toast.makeText(activity, R.string.update_downloaded, Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Log.e(TAG, "Error installing update", e);
-            Toast.makeText(activity, "Error installing update", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, R.string.error_installing_update, Toast.LENGTH_SHORT).show();
         }
     }
 }

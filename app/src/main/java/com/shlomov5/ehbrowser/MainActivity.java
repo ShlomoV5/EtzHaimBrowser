@@ -295,8 +295,9 @@ public class MainActivity extends Activity {
     private Set<String> getDefaultUrls() {
         Set<String> defaultUrls = new HashSet<>();
         // Try to read from whitelist.txt in assets or raw resources
+        BufferedReader reader = null;
         try {
-            BufferedReader reader = new BufferedReader(
+            reader = new BufferedReader(
                 new InputStreamReader(getAssets().open("whitelist.txt")));
             String line;
             while ((line = reader.readLine()) != null) {
@@ -305,7 +306,6 @@ public class MainActivity extends Activity {
                     defaultUrls.add(line);
                 }
             }
-            reader.close();
         } catch (IOException e) {
             Log.e("MainActivity", "Error reading whitelist.txt, using hardcoded defaults", e);
             // Fallback to hardcoded defaults if file not found
@@ -313,6 +313,14 @@ public class MainActivity extends Activity {
             defaultUrls.add("www.etzhaim.org.il");
             defaultUrls.add("wordwall.net");
             defaultUrls.add("www.wordwall.net");
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    Log.e("MainActivity", "Error closing reader", e);
+                }
+            }
         }
         return defaultUrls;
     }
